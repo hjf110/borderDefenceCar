@@ -3,8 +3,9 @@ import App from './App.vue';
 import router from './router';
 import ElementUI from 'element-ui';
 import NProgress from 'nprogress'; //网页上方进度条
+import MyTool from './utils/index';//工具类
 
-import * as dd from 'dingtalk-jsapi'; // 此方式为整体加载，也可按需进行加载
+
 import 'nprogress/nprogress.css'; //网页上方进度条css
 import './assets/css/icon.css';
 import './components/common/directives';
@@ -15,21 +16,19 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 
 
+
 Vue.config.productionTip = false;
-
-
-
-
 
 
 Vue.use(ElementUI); //导入elementUi
 Vue.use(Vant); //导入vant
+Vue.use(MyTool);//导入工具类
+// Vue.use(Notify); //导入vant
 
 
 // 简单配置
 // NProgress.inc(0.2)
-NProgress.configure({ easing: 'ease', speed: 500, showSpinner: false });
-
+NProgress.configure({easing: 'ease', speed: 500, showSpinner: false});
 
 
 //使用钩子函数对路由进行权限跳转

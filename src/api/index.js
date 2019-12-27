@@ -14,6 +14,8 @@ export function getCarInfo() {
 
 //提交用车申请
 export function createApply(data) {
+    console.log(JSON.stringify(data));
+    alert(JSON.stringify(data));
     return request({
         headers:
             {
@@ -48,9 +50,10 @@ export function ddapprover() {
 }
 
 //获取所有人员
-export function getDDid(code) {
+export function getDDid(data) {
     return request({
-        url: 'login',
-        method: 'get'
+        url: baseUrl2+'login',
+        method: 'get',
+        params: data
     });
 }

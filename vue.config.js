@@ -1,7 +1,6 @@
 module.exports = {
     publicPath: './',
     assetsDir: 'static',
-    productionSourceMap: false,
     devServer: {
         port: 10015, //开发环境端口号
         https: false //传输协议
@@ -11,9 +10,9 @@ module.exports = {
         //         changeOrigin:true,
         //         pathRewrite:{
         //             '/api':''
-        //         } 
+        //         }
         //     }
-        // }  
+        // }
     },
     //关闭格式检查
     lintOnSave: false,

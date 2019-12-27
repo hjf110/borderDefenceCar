@@ -1,7 +1,10 @@
 <template>
     <div style="height: 100%; position: relative;">
+
         <div style="height: 90%;padding: 5px;overflow-y: auto;">
+
             <van-cell-group>
+
                 <van-field v-model="form.department" label="用车部门" placeholder="请输入用车部门" input-align="right"></van-field>
             </van-cell-group>
 
@@ -10,14 +13,8 @@
             </van-cell-group>
 
             <van-cell-group style="margin-top: 10px;">
-                <van-field
-                        v-model="form.reason"
-                        rows="3"
-                        autosize
-                        label="用车事由"
-                        type="textarea"
-                        placeholder="请输入事由"
-                        input-align="right"></van-field>
+                <van-field v-model="form.reason" rows="3" autosize label="用车事由" type="textarea" placeholder="请输入事由"
+                           input-align="right"></van-field>
             </van-cell-group>
             <van-cell-group style="margin-top: 10px;">
                 <van-field v-model="form.placefrom" label="始发地点" placeholder="请输入始发地点" input-align="right"></van-field>
@@ -30,43 +27,19 @@
             </van-cell-group>
             <van-cell-group style="margin-top: 10px;">
                 <!-- 选择计划外出时间 -->
-                <van-field
-                        readonly
-                        clickable
-                        label="计划外出时间"
-                        v-model="form.outtime"
-                        placeholder="选择计划外出时间"
-                        @click="pop.outtime = true"
-                        input-align="right"
-                        is-link
-                ></van-field>
+                <van-field readonly clickable label="计划外出时间" v-model="form.outtime" placeholder="选择计划外出时间"
+                           @click="pop.outtime = true" input-align="right" is-link></van-field>
                 <van-popup v-model="pop.outtime" position="bottom">
-                    <van-datetime-picker
-                            type="datetime"
-                            :min-date="minDate"
-                            @confirm="pop.outtime = false"
-                            @change="chooseOutTime"
-                            @cancel="pop.outtime = false"
-                    ></van-datetime-picker>
+                    <van-datetime-picker type="date" :min-date="minDate" @confirm="chooseOutTime"
+                                         @cancel="pop.outtime=false"></van-datetime-picker>
                 </van-popup>
 
                 <!-- 计划归队时间 -->
-                <van-field
-                        readonly
-                        clickable
-                        label="计划归队时间"
-                        v-model="form.intime"
-                        placeholder="选择计划归队时间"
-                        @click="pop.intime = true"
-                        input-align="right"
-                        is-link></van-field>
+                <van-field readonly clickable label="计划归队时间" v-model="form.intime" placeholder="选择计划归队时间"
+                           @click="pop.intime = true" input-align="right" is-link></van-field>
                 <van-popup v-model="pop.intime" position="bottom">
-                    <van-datetime-picker
-                            type="datetime"
-                            :min-date="minDate"
-                            @confirm="pop.intime = false"
-                            @change="chooseInTime"
-                            @cancel="pop.intime = false"></van-datetime-picker>
+                    <van-datetime-picker type="date" :min-date="minDate" @confirm="chooseInTime"
+                                         @cancel="pop.intime=false"></van-datetime-picker>
                 </van-popup>
             </van-cell-group>
 
@@ -79,48 +52,20 @@
                 </div>
                 <van-cell-group style="margin-top: 5px;">
                     <!-- 选择计划外出时间 -->
-                    <van-field
-                            readonly
-                            clickable
-                            label="车辆类型"
-                            :value="item.cartype"
-                            placeholder="选择车辆类型"
-                            @click="clickCarType(idx)"
-                            input-align="right"
-                            is-link></van-field>
-                    <van-field
-                            readonly
-                            clickable
-                            label="车牌号码"
-                            :value="item.carno"
-                            placeholder="选择车辆类型"
-                            @click="clickCarNo(idx)"
-                            input-align="right"
-                            is-link></van-field>
+                    <van-field readonly clickable label="车辆类型" :value="item.cartype" placeholder="选择车辆类型"
+                               @click="clickCarType(idx)" input-align="right" is-link></van-field>
+                    <van-field readonly clickable label="车牌号码" :value="item.carno" placeholder="选择车辆类型"
+                               @click="clickCarNo(idx)" input-align="right" is-link></van-field>
 
-                    <van-field :value="item.model" label="厂牌型号" placeholder="" readonly
-                               input-align="right"></van-field>
+                    <van-field :value="item.model" label="厂牌型号" placeholder="" readonly input-align="right"></van-field>
 
                     <van-field v-model="item.driver" label="驾驶员" placeholder="请输入驾驶员姓名" input-align="right"></van-field>
 
-                    <van-field
-                            readonly
-                            clickable
-                            label="派车方式"
-                            :value="item.applyway"
-                            placeholder="选择派车方式"
-                            @click="clickApplyWay(idx)"
-                            input-align="right"
-                            is-link>
+                    <van-field readonly clickable label="派车方式" :value="item.applyway" placeholder="选择派车方式"
+                               @click="clickApplyWay(idx)" input-align="right" is-link>
                     </van-field>
-                    <van-field
-                            v-model="item.otherrequire"
-                            rows="3"
-                            autosize
-                            label="其它要求"
-                            type="textarea"
-                            placeholder="请输入"
-                            input-align="right">
+                    <van-field v-model="item.otherrequire" rows="3" autosize label="其它要求" type="textarea"
+                               placeholder="请输入" input-align="right">
                     </van-field>
 
 
@@ -133,49 +78,28 @@
             </div>
 
             <van-cell-group style="margin-top: 10px;">
-                <van-field
-                        v-model="form.remark"
-                        rows="3"
-                        autosize
-                        label="备注"
-                        type="textarea"
-                        placeholder="请输入"
-                        input-align="right">
+                <van-field v-model="form.remark" rows="3" autosize label="备注" type="textarea" placeholder="请输入"
+                           input-align="right">
                 </van-field>
             </van-cell-group>
 
             <van-cell-group style="margin-top: 10px;padding: 5px;">
                 <div style="position: relative;left:10px;">
                     <div style="width: 100%;height: 40px;line-height: 40px;">图片</div>
-                    <van-uploader
-                            :after-read="afterRead"
-                            v-model="pics"
-                            multiple
-                            @delete="deleteImg"
-                            :max-count="9"></van-uploader>
+                    <van-uploader :after-read="afterRead" v-model="pics" capture="camera" @delete="deleteImg"
+                    ></van-uploader>
                 </div>
             </van-cell-group>
 
             <van-cell-group style="margin-top: 10px;">
-                <van-field
-                        readonly
-                        clickable
-                        label="审批人"
-                        :value="ddapprover.name"
-                        placeholder="请选择审批人"
-                        @click="pop.ddapprover = true"
-                        input-align="right"
-                        is-link></van-field>
+                <van-field readonly clickable label="审批人" :value="ddapprover.name" placeholder="请选择审批人"
+                           @click="pop.ddapprover = true" input-align="right" is-link></van-field>
             </van-cell-group>
 
 
             <van-popup v-model="pop.cartype" position="bottom">
-                <van-picker
-                        show-toolbar
-                        title="车辆类型"
-                        :columns="select.cartype"
-                        @cancel="pop.cartype = false"
-                        @confirm="onConfirmCartype"></van-picker>
+                <van-picker show-toolbar title="车辆类型" :columns="select.cartype" @cancel="pop.cartype = false"
+                            @confirm="onConfirmCartype"></van-picker>
             </van-popup>
 
             <van-popup v-model="pop.carno" position="bottom">
@@ -183,20 +107,12 @@
                             @confirm="onConfirmCarno"></van-picker>
             </van-popup>
             <van-popup v-model="pop.applyway" position="bottom">
-                <van-picker
-                        show-toolbar
-                        title="派车方式"
-                        :columns="select.applyway"
-                        @cancel="pop.applyway = false"
-                        @confirm="onConfirmApplyway"></van-picker>
+                <van-picker show-toolbar title="派车方式" :columns="select.applyway" @cancel="pop.applyway = false"
+                            @confirm="onConfirmApplyway"></van-picker>
             </van-popup>
             <van-popup v-model="pop.ddapprover" position="bottom">
-                <van-picker
-                        show-toolbar
-                        title="审批人"
-                        :columns="select.ddapprover"
-                        @cancel="pop.ddapprover = false"
-                        @confirm="onConfirmDdapprover">
+                <van-picker show-toolbar title="审批人" :columns="select.ddapprover" @cancel="pop.ddapprover = false"
+                            @confirm="onConfirmDdapprover">
                 </van-picker>
             </van-popup>
             <div style="height: 10px;width: 100%;">
@@ -213,11 +129,16 @@
 <script>
     import {getCarInfo, createApply, uploadImg, ddapprover, getDDid} from "../../api";
     // import dd from "dingtalk-jsapi";
-    import * as dd from 'dingtalk-jsapi'; // 此方式为整体加载，也可按需进行加载
+
+    import Notify from "vant/es/notify";
+    import dd from "dingtalk-jsapi";
+    // import Notify from "vant/es/notify";
+
 
     export default {
         data() {
             return {
+                code: "",
                 minHour: 10,
                 maxHour: 20,
                 minDate: new Date(),
@@ -228,41 +149,40 @@
                     applyway: ['一进一出', '多进多出'], //派车方式
                     ddapprover: [],
                 },
-                pop: {//弹窗显示隐藏
+                pop: { //弹窗显示隐藏
                     intime: false, //回来时间弹出框
                     outtime: false, //出发时间弹出框
                     cartype: false, //车辆类型
                     carno: false, //车牌号
-                    applyway: false,//派车方式
-                    ddapprover: false,//审批人
+                    applyway: false, //派车方式
+                    ddapprover: false, //审批人
                 },
                 carNoList: [],
                 carInfoIdx: '', //点击的索引
-                carInfo: [
-                    {
-                        cartype: '', //车辆类型
-                        carno: '', //车牌号码
-                        model: '', //厂牌型号
-                        driver: '', //驾驶员
-                        applyway: '', //派车方式
-                        otherrequire: '' //其他要求
-                    }
-                ],
+                carInfo: [{
+                    cartype: '', //车辆类型
+                    carno: '', //车牌号码
+                    model: '', //厂牌型号
+                    driver: '', //驾驶员
+                    applyway: '', //派车方式
+                    otherrequire: '' //其他要求
+                }],
                 ddapprover: {
                     name: "",
                     infoList: []
                 },
                 pics: [],
                 form: {
-                    department: "",//用车部门
-                    user: "",//用车人
-                    reason: "",//用车事由
-                    placefrom: "",//始发地点
-                    placeto: "",//目的地
-                    placeback: "",//返回地点
-                    remark: "",//备注
-                    pics: [],//图片
-                    ddapprover: "",//审批人id
+                    ddunionid: "",//发起人userID
+                    department: "", //用车部门
+                    user: "", //用车人
+                    reason: "", //用车事由
+                    placefrom: "", //始发地点
+                    placeto: "", //目的地
+                    placeback: "", //返回地点
+                    remark: "", //备注
+                    pics: [], //图片
+                    ddapprover: "", //审批人id
                     outtime: '', //计划外出时间
                     intime: '' //计划归队时间
                 }
@@ -274,9 +194,9 @@
             //获取车牌号详情
             getCarInfo().then(res => {
                 console.log(res);
-                this.carNoList = res.data;//车牌号详细信息数组
+                this.carNoList = res.data; //车牌号详细信息数组
                 res.data.forEach((obj, idx) => {
-                    this.select.carno.push(obj.carno);//车牌号数组
+                    this.select.carno.push(obj.carno); //车牌号数组
                 })
             }).catch(err => {
 
@@ -286,36 +206,48 @@
             ddapprover().then(res => {
                 console.log('获取所有用户----', res);
                 this.ddapprover.infoList = res.data;
+                // res.data.forEach((obj, idx) => {
+                //     if(obj.name=="陈晓华"||obj.name=="金诚"||obj.name=="汤国峰"||obj.name=="周盛"||obj.name=="蒋红"||obj.name=="余胜利"||obj.name=="潘贵平"||obj.name=="刘旭东")
+                //     this.select.ddapprover.push(obj.name);
+                // });
                 res.data.forEach((obj, idx) => {
+                    // if(obj.name=="陈晓华"||obj.name=="金诚"||obj.name=="汤国峰"||obj.name=="周盛"||obj.name=="蒋红"||obj.name=="余胜利"||obj.name=="潘贵平"||obj.name=="刘旭东")
                     this.select.ddapprover.push(obj.name);
                 });
 
             }).catch(err => {
-
+                Notify({type: 'danger', message: err});
             });
 
+
+        },
+        mounted() {
+            const _this = this;
             dd.ready(function () {
                 // dd.ready参数为回调函数，在环境准备就绪时触发，jsapi的调用需要保证在该回调函数触发后调用，否则无效。
                 dd.runtime.permission.requestAuthCode({
                     corpId: "ding0af781d4f5c9511f24f2f5cc6abecb85",
                     onSuccess: function (result) {
                         let code = result.code;
-                        getDDid(code).then(res => {
-                            dd.device.notification.alert({
-                                message: res.data,
-                                title: "成功", //可传空
-                                buttonName: "好的",
-                                onSuccess: function () {
-                                    //onSuccess将在点击button之后回调
-                                    /*回调*/
-                                },
-                                onFail: function (err) {
-                                }
-                            });
+                        // _this.code = code;
+
+                        getDDid({code: code}).then(res => {
+                            _this.form.ddunionid = res.data;
+                            // dd.device.notification.alert({
+                            //     message: res.data,
+                            //     title: "成功", //可传空
+                            //     buttonName: "好的",
+                            //     onSuccess: function () {
+                            //         //onSuccess将在点击button之后回调
+                            //         /*回调*/
+                            //     },
+                            //     onFail: function (err) {
+                            //     }
+                            // });
                         }).catch(err => {
                             dd.device.notification.alert({
                                 message: err,
-                                title: "错误", //可传空
+                                title: "错误信息", //可传空
                                 buttonName: "好的",
                                 onSuccess: function () {
                                     //onSuccess将在点击button之后回调
@@ -325,7 +257,6 @@
                                 }
                             });
                         })
-
 
                     },
                     onFail: function (err) {
@@ -343,9 +274,9 @@
                     }
 
                 });
+
+
             });
-
-
         },
         components: {},
         methods: {
@@ -371,26 +302,22 @@
             },
             //添加车辆明细
             addCarInfo() {
-                this.carInfo.push(
-                    {
-                        cartype: '', //车辆类型
-                        carno: '', //车牌号码
-                        model: '', //厂牌型号
-                        driver: '', //驾驶员
-                        applyway: '', //派车方式
-                        otherrequire: '' //其他要求
-                    }
-                )
+                this.carInfo.push({
+                    cartype: '', //车辆类型
+                    carno: '', //车牌号码
+                    model: '', //厂牌型号
+                    driver: '', //驾驶员
+                    applyway: '', //派车方式
+                    otherrequire: '' //其他要求
+                })
             },
-            chooseOutTime(e) {
-                //选择外出时间
-                let endTimeArr = e.getValues(); //["2019", "03", "22", "17", "28"]
-                this.form.outtime = `${endTimeArr[0]}-${endTimeArr[1]}-${endTimeArr[2]}`;
+            chooseOutTime(value) {
+                this.form.outtime = this.$ValidateUtil.getTime(1, value);
+                this.pop.outtime = false;
             },
-            chooseInTime(e) {
-                //选择归来时间
-                let endTimeArr = e.getValues(); //["2019", "03", "22", "17", "28"]
-                this.form.intime = `${endTimeArr[0]}-${endTimeArr[1]}-${endTimeArr[2]}`;
+            chooseInTime(value) {
+                this.form.intime = this.$ValidateUtil.getTime(1, value);
+                this.pop.intime = false;
             },
             //选择车辆类型
             clickCarType(idx) {
@@ -413,9 +340,9 @@
                 this.carInfo[this.carInfoIdx].cartype = value;
                 this.pop.cartype = false;
             },
-            onConfirmCarno(value, index) {
+            onConfirmCarno: function (value, index) {
                 console.log(value);
-                this.carInfo[this.carInfoIdx].carno = value;//赋值车牌号
+                this.carInfo[this.carInfoIdx].carno = value; //赋值车牌号
                 this.carNoList.forEach((obj, idx) => {
                     // console.log('------------',obj);
                     if (obj.carno == value) {
@@ -433,19 +360,28 @@
             onConfirmDdapprover(value, idx) {
                 console.log(idx);
                 this.ddapprover.name = value;
-                this.form.ddapprover = this.ddapprover.infoList[idx].unionid;
+                this.ddapprover.infoList.forEach((obj, idx) => {
+                    if (obj.name == value) {
+                        this.form.ddapprover = obj.unionid;
+                    }
+                });
+                // this.form.ddapprover = this.ddapprover.infoList[idx].unionid;
                 this.pop.ddapprover = false;
             },
-
             submit() {
-                createApply(this.form).then(res => {
+                let val = {};
+                val.apply = this.form;
+                val.applyDetails = this.carInfo;
+                createApply(val).then(res => {
                     console.log(res);
                 }).catch(err => {
+                    Notify({type: 'danger', message: err});
                     console.log(err);
                 })
             }
         }
     };
+
 </script>
 
 <style scoped></style>
