@@ -2,35 +2,29 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import ElementUI from 'element-ui';
-// import VueI18n from 'vue-i18n';
-import MuseUI from 'muse-ui';
-import { messages } from './components/common/i18n';
 import NProgress from 'nprogress'; //网页上方进度条
-// import Vant from 'vant';
+
+import * as dd from 'dingtalk-jsapi'; // 此方式为整体加载，也可按需进行加载
 import 'nprogress/nprogress.css'; //网页上方进度条css
-// import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
-// import './assets/css/theme-green/index.css'; // 浅绿色主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
-import 'muse-ui/dist/muse-ui.css';
 
-// import 'vant/lib/index.css';
+//vant 组件
+import Vant from 'vant';
+import 'vant/lib/index.css';
+
+
 Vue.config.productionTip = false;
-// Vue.use(VueI18n);
-Vue.use(MuseUI);//使用muse-ui
-// Vue.use(Vant);//使用muse-ui
 
 
-Vue.use(ElementUI, {
-    size: 'small'
-});
 
 
-// const i18n = new VueI18n({
-//     locale: 'zh',
-//     messages
-// });
+
+
+Vue.use(ElementUI); //导入elementUi
+Vue.use(Vant); //导入vant
+
 
 // 简单配置
 // NProgress.inc(0.2)
@@ -41,7 +35,7 @@ NProgress.configure({ easing: 'ease', speed: 500, showSpinner: false });
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     // NProgress.done(true);
-    console.log('进入了------------',to.meta.title);
+    console.log('进入了------------', to.meta.title);
     document.title = `${to.meta.title}`;
     next();
     // const role = localStorage.getItem('ms_username');
@@ -64,8 +58,6 @@ router.beforeEach((to, from, next) => {
     // NProgress开始进度条
     NProgress.start();
 });
-
-
 // 全局后置钩子-常用于结束动画等
 router.afterEach(transition => {
     console.log('路由载入成功!!');
@@ -75,17 +67,13 @@ router.afterEach(transition => {
     //不加这个进度条会不知道什么原因的卡主
     Vue.nextTick(() => {
         NProgress.done();
-    }); 
+    });
     // setTimeout(() => {
     //     // console.log(transition)
     // }, 100);
 });
-
 new Vue({
     router,
     // i18n,
     render: h => h(App)
 }).$mount('#app');
-
-
-

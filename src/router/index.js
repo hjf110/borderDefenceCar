@@ -32,4 +32,4 @@ export default new Router({
             redirect: '/404'
         }
     ]
-});
+})

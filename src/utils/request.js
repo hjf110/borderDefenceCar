@@ -4,7 +4,7 @@ import axios from 'axios';
 const service = axios.create({
     // process.env.NODE_ENV === 'development' 来判断是否开发环境
     // easy-mock服务挂了，暂时不使用了
-    baseURL: process.env.VUE_APP_BASE_URL,
+    // baseURL: "",
     timeout: 5000
 });
 
@@ -26,17 +26,19 @@ service.interceptors.response.use(
             if (response.data.code == 0) {
                 return response.data;
             } else {
+                console.log(response.data.msg);
                 // Message.error(response.data.msg);
-                return Promise.reject();
+                return Promise.reject(response.data.msg);
             }
         } else {
             // Message.error('');
-            return Promise.reject();
+            console.log(response.data.msg);
+            return Promise.reject("网络错误--"+response.status);
         }
     },
     error => {
         console.log(error);
-        return Promise.reject();
+        return Promise.reject("网络错误");
     }
 );
 

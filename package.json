@@ -11,11 +11,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "dingtalk-jsapi": "^2.8.33",
     "element-ui": "^2.11.0",
     "mavon-editor": "^2.6.17",
-    "muse-ui": "^3.0.2",
     "nprogress": "^0.2.0",
     "vant": "^2.3.3",
+    "vee-validate": "^3.2.1",
     "vue": "^2.6.10",
     "vue-cropperjs": "^3.0.0",
     "vue-i18n": "^8.10.0",
