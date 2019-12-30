@@ -97,6 +97,67 @@
             </van-cell-group>
 
 
+            <van-cell-group style="margin-top: 10px;">
+                <van-field readonly clickable label="抄送人" :placeholder="ddcclist.result.length>0?ddcclist.msg:'请选择抄送人'"
+                           @click="pop.ddccList = true" input-align="right" is-link></van-field>
+            </van-cell-group>
+
+
+            <van-popup v-model="pop.ddccList" position="bottom" :style="{ height: '100%' }">
+                <div style="width: 100%;height: 100%;position: relative;">
+
+
+                    <div style="width:100%;height:15%;">
+                        <van-search placeholder="请输入搜索关键词" v-model="ddcclist.keyword"></van-search>
+                        <div>
+                            <van-button style="margin-left: 10px;" type="primary" size="small" @click="checkAll">全选
+                            </van-button>
+                            <van-button style="margin-left: 10px;" type="info" size="small" @click="toggleAll">反选
+                            </van-button>
+                        </div>
+                    </div>
+                    <div style="height:78%;overflow-y: auto;">
+                        <van-checkbox-group v-model="ddcclist.result" ref="checkboxGroup">
+                            <van-cell-group>
+                                <van-cell
+                                        v-for="(item, index) in ccList"
+                                        clickable
+                                        :key="index"
+                                        :title="item.name"
+                                        @click="toggle(index)"
+                                >
+                                    <van-checkbox
+                                            :name="item.unionid"
+                                            ref="checkboxes"
+                                            slot="right-icon"></van-checkbox>
+                                </van-cell>
+                            </van-cell-group>
+                        </van-checkbox-group>
+                    </div>
+                    <div style="height:7%;overflow: hidden;">
+                        <div style="display: inline-block;width: 33.33%;text-align: left;">
+                            <van-button @click="closeDDccList" style="margin-top: 6%;margin-left: 2%" type="default"
+                                        size="small">取消
+                            </van-button>
+                        </div>
+                        <div style="display: inline-block;width: 33.33%;text-align: center;">
+                            <!--                            <van-button @click="pop.checkddccList=true" style="margin-top: 6%;margin-left: 2%" type="primary" size="small" >查看已选择({{ddcclist.result.length}})</van-button>-->
+                        </div>
+                        <div style="display: inline-block;width: 33.33%;text-align: right;">
+                            <van-button @click="successCheckDDccList" style="margin-top: 6%;margin-right: 2%" type="info" size="small"
+                                        :disabled="ddcclist.result.length==0">
+                                确定({{ddcclist.result.length}}/{{ddcclist.data.length}})
+                            </van-button>
+                        </div>
+
+                    </div>
+                </div>
+            </van-popup>
+            <!--            <van-popup v-model="pop.checkddccList" position="bottom"  closeable :style="{ height: '100%' }">-->
+
+            <!--            </van-popup>-->
+
+
             <van-popup v-model="pop.cartype" position="bottom">
                 <van-picker show-toolbar title="车辆类型" :columns="select.cartype" @cancel="pop.cartype = false"
                             @confirm="onConfirmCartype"></van-picker>
@@ -156,6 +217,8 @@
                     carno: false, //车牌号
                     applyway: false, //派车方式
                     ddapprover: false, //审批人
+                    ddccList: false,//抄送人
+                    checkddccList: false,//查看已选择的抄送人
                 },
                 carNoList: [],
                 carInfoIdx: '', //点击的索引
@@ -171,6 +234,12 @@
                     name: "",
                     infoList: []
                 },
+                ddcclist: {
+                    result: [],//结果集
+                    keyword: "",
+                    data: [],
+                    msg:'',
+                },
                 pics: [],
                 form: {
                     ddunionid: "",//发起人userID
@@ -183,12 +252,23 @@
                     remark: "", //备注
                     pics: [], //图片
                     ddapprover: "", //审批人id
+                    ddcclist:"",//
                     outtime: '', //计划外出时间
                     intime: '' //计划归队时间
                 }
             };
         },
-        computed: {},
+        computed: {
+            ccList() {
+                let reg = new RegExp(this.ddcclist.keyword);
+
+                if (this.ddcclist.keyword) {
+                    return (this.ddcclist.data).filter(item => item.name.match(reg))
+                } else {
+                    return this.ddcclist.data
+                }
+            }
+        },
         created() {
             const _this = this;
             //获取车牌号详情
@@ -206,6 +286,7 @@
             ddapprover().then(res => {
                 console.log('获取所有用户----', res);
                 this.ddapprover.infoList = res.data;
+                this.ddcclist.data = res.data;
                 // res.data.forEach((obj, idx) => {
                 //     if(obj.name=="陈晓华"||obj.name=="金诚"||obj.name=="汤国峰"||obj.name=="周盛"||obj.name=="蒋红"||obj.name=="余胜利"||obj.name=="潘贵平"||obj.name=="刘旭东")
                 //     this.select.ddapprover.push(obj.name);
@@ -280,6 +361,47 @@
         },
         components: {},
         methods: {
+            successCheckDDccList(){//确定抄送人选择
+                if(this.ddcclist.result.length<5){
+                    let aa = [];
+                    this.ddcclist.data.forEach((obj,idx)=>{
+                        this.ddcclist.result.forEach((obj2,idx2)=>{
+                            if(obj2===obj.unionid){
+                                aa.push(obj.name);
+                            }
+                        });
+                    });
+                    this.ddcclist.msg =aa.join(',');
+                }else{
+                    let a ;
+                    this.ddcclist.data.forEach((obj,idx)=>{
+                        if(obj.unionid===this.ddcclist.result[0]){
+                            a = obj.name;
+                        }
+                    });
+                    this.ddcclist.msg =a+"等 "+this.ddcclist.result.length+"人"
+                }
+                this.pop.ddccList = false;//关闭抄送人选择
+
+                this.form.ddcclist = this.ddcclist.result.join(',');
+            },
+            closeDDccList() {//取消抄送人选择
+                this.pop.ddccList = false;//关闭抄送人选择
+                this.ddcclist.result = [];//清空值
+            },
+            checkAll() {
+                this.$refs.checkboxGroup.toggleAll(true);
+            },
+            toggleAll() {
+                this.$refs.checkboxGroup.toggleAll();
+            },
+            /**
+             * 抄送人员复选框
+             * @param index
+             */
+            toggle(index) {
+                this.$refs.checkboxes[index].toggle();
+            },
             deleteImg(file, info) {
                 console.log("点击了删除按钮");
                 // console.log(file);
