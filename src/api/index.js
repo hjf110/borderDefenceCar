@@ -15,7 +15,7 @@ export function getCarInfo() {
 //提交用车申请
 export function createApply(data) {
     console.log(JSON.stringify(data));
-    alert(JSON.stringify(data));
+    // alert(JSON.stringify(data));
     return request({
         headers:
             {

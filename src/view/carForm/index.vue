@@ -144,7 +144,8 @@
                             <!--                            <van-button @click="pop.checkddccList=true" style="margin-top: 6%;margin-left: 2%" type="primary" size="small" >查看已选择({{ddcclist.result.length}})</van-button>-->
                         </div>
                         <div style="display: inline-block;width: 33.33%;text-align: right;">
-                            <van-button @click="successCheckDDccList" style="margin-top: 6%;margin-right: 2%" type="info" size="small"
+                            <van-button @click="successCheckDDccList" style="margin-top: 6%;margin-right: 2%"
+                                        type="info" size="small"
                                         :disabled="ddcclist.result.length==0">
                                 确定({{ddcclist.result.length}}/{{ddcclist.data.length}})
                             </van-button>
@@ -181,7 +182,9 @@
             </div>
         </div>
         <div style="height: 10%;position: absolute;bottom: 0;width: 100%;text-align: center;background-color: white;">
-            <van-button @click="submit" type="info" style="border-radius: 8px;width: 90%;margin-top: 4%;">提交
+            <van-button :loading="isLoading" :disabled="isLoading" @click="submit" type="info"
+                        style="border-radius: 8px;width: 90%;margin-top: 4%;">
+                {{isLoading?'提交中':'提交'}}
             </van-button>
         </div>
     </div>
@@ -190,15 +193,16 @@
 <script>
     import {getCarInfo, createApply, uploadImg, ddapprover, getDDid} from "../../api";
     // import dd from "dingtalk-jsapi";
-
-    import Notify from "vant/es/notify";
+    import {Toast, Notify} from 'vant';
     import dd from "dingtalk-jsapi";
+
     // import Notify from "vant/es/notify";
 
 
     export default {
         data() {
             return {
+                isLoading: false,
                 code: "",
                 minHour: 10,
                 maxHour: 20,
@@ -238,7 +242,7 @@
                     result: [],//结果集
                     keyword: "",
                     data: [],
-                    msg:'',
+                    msg: '',
                 },
                 pics: [],
                 form: {
@@ -252,7 +256,7 @@
                     remark: "", //备注
                     pics: [], //图片
                     ddapprover: "", //审批人id
-                    ddcclist:"",//
+                    ddcclist: "",//
                     outtime: '', //计划外出时间
                     intime: '' //计划归队时间
                 }
@@ -287,14 +291,14 @@
                 console.log('获取所有用户----', res);
                 this.ddapprover.infoList = res.data;
                 this.ddcclist.data = res.data;
-                // res.data.forEach((obj, idx) => {
-                //     if(obj.name=="陈晓华"||obj.name=="金诚"||obj.name=="汤国峰"||obj.name=="周盛"||obj.name=="蒋红"||obj.name=="余胜利"||obj.name=="潘贵平"||obj.name=="刘旭东")
-                //     this.select.ddapprover.push(obj.name);
-                // });
                 res.data.forEach((obj, idx) => {
-                    // if(obj.name=="陈晓华"||obj.name=="金诚"||obj.name=="汤国峰"||obj.name=="周盛"||obj.name=="蒋红"||obj.name=="余胜利"||obj.name=="潘贵平"||obj.name=="刘旭东")
+                    if(obj.name=="陈晓华"||obj.name=="金诚"||obj.name=="汤国峰"||obj.name=="周盛"||obj.name=="蒋红"||obj.name=="余胜利"||obj.name=="潘贵平"||obj.name=="刘旭东")
                     this.select.ddapprover.push(obj.name);
                 });
+                // res.data.forEach((obj, idx) => {
+                //     // if(obj.name=="陈晓华"||obj.name=="金诚"||obj.name=="汤国峰"||obj.name=="周盛"||obj.name=="蒋红"||obj.name=="余胜利"||obj.name=="潘贵平"||obj.name=="刘旭东")
+                //     this.select.ddapprover.push(obj.name);
+                // });
 
             }).catch(err => {
                 Notify({type: 'danger', message: err});
@@ -361,25 +365,25 @@
         },
         components: {},
         methods: {
-            successCheckDDccList(){//确定抄送人选择
-                if(this.ddcclist.result.length<5){
+            successCheckDDccList() {//确定抄送人选择
+                if (this.ddcclist.result.length < 5) {
                     let aa = [];
-                    this.ddcclist.data.forEach((obj,idx)=>{
-                        this.ddcclist.result.forEach((obj2,idx2)=>{
-                            if(obj2===obj.unionid){
+                    this.ddcclist.data.forEach((obj, idx) => {
+                        this.ddcclist.result.forEach((obj2, idx2) => {
+                            if (obj2 === obj.unionid) {
                                 aa.push(obj.name);
                             }
                         });
                     });
-                    this.ddcclist.msg =aa.join(',');
-                }else{
-                    let a ;
-                    this.ddcclist.data.forEach((obj,idx)=>{
-                        if(obj.unionid===this.ddcclist.result[0]){
+                    this.ddcclist.msg = aa.join(',');
+                } else {
+                    let a;
+                    this.ddcclist.data.forEach((obj, idx) => {
+                        if (obj.unionid === this.ddcclist.result[0]) {
                             a = obj.name;
                         }
                     });
-                    this.ddcclist.msg =a+"等 "+this.ddcclist.result.length+"人"
+                    this.ddcclist.msg = a + "等 " + this.ddcclist.result.length + "人"
                 }
                 this.pop.ddccList = false;//关闭抄送人选择
 
@@ -491,12 +495,16 @@
                 this.pop.ddapprover = false;
             },
             submit() {
+                this.isLoading = true;
                 let val = {};
                 val.apply = this.form;
                 val.applyDetails = this.carInfo;
                 createApply(val).then(res => {
+                    this.isLoading = false;
                     console.log(res);
+                    Toast.success('提交成功');
                 }).catch(err => {
+                    this.isLoading = false;
                     Notify({type: 'danger', message: err});
                     console.log(err);
                 })
