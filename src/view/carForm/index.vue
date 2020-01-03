@@ -494,15 +494,59 @@
                 // this.form.ddapprover = this.ddapprover.infoList[idx].unionid;
                 this.pop.ddapprover = false;
             },
+            clearForm() {
+                this.form.department = '';
+                this.form.user = '';
+                this.form.reason = '';
+                this.form.placefrom = '';
+                this.form.placeto = '';
+                this.form.placeback = '';
+                this.form.remark = '';
+                this.form.pics = [];
+                this.form.ddapprover = '';
+                this.form.ddcclist = '';
+                this.form.outtime = '';
+                this.form.intime = '';
+
+                this.carInfo = [{
+                    cartype: '', //车辆类型
+                    carno: '', //车牌号码
+                    model: '', //厂牌型号
+                    driver: '', //驾驶员
+                    applyway: '', //派车方式
+                    otherrequire: '' //其他要求
+                }];
+                this.ddcclist.result = [];
+                this.pics = [];
+            },
             submit() {
                 this.isLoading = true;
                 let val = {};
                 val.apply = this.form;
                 val.applyDetails = this.carInfo;
+
                 createApply(val).then(res => {
                     this.isLoading = false;
                     console.log(res);
-                    Toast.success('提交成功');
+
+                    const t1 = Toast.success({
+                        message: '提交成功,请手动关闭页面或等待 20 秒后再次提交',
+                        forbidClick: true,//禁止背景点击
+                        duration: 20000,//8秒显示
+                    });
+
+                    let second = 20;
+                    const timer = setInterval(() => {
+                        second--;
+                        if (second) {
+                            t1.message = `提交成功,请手动关闭页面或等待 ${second} 秒后再次提交`;
+                        } else {
+                            clearInterval(timer);
+                            // 手动清除 Toast
+                            Toast.clear();
+                        }
+                    }, 1000);
+                    this.clearForm();//清空表单的值
                 }).catch(err => {
                     this.isLoading = false;
                     Notify({type: 'danger', message: err});
