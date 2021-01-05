@@ -9,7 +9,7 @@
     "dev": "npm run serve"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "dingtalk-jsapi": "^2.8.33",
     "element-ui": "^2.11.0",
